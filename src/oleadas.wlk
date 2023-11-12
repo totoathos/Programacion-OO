@@ -34,15 +34,18 @@ class Oleadas{
 	}
 	
 	method avanzar_oleadas(){
-		if(self.comprobar_enemigos()){
 			nivel += 1
+			self.crear_enemigos()
 			
-		}
+		
 	}
 	
 	//para crear los enemigos evaluamos la oleada para determinar la dificultad
 	method crear_enemigos(){
-		(1 .. generador_enemigos).forEach{n => cantidad_enemigos.add(new Enemigos_Larga_Distancia(vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_largo")) ; cantidad_enemigos.add(new Enemigo_Corta_Distancia(vida = 75*dificultad, dano = 30*dificultad))}
+		(1 .. generador_enemigos).forEach{n => cantidad_enemigos.add(new Enemigos_Larga_Distancia(vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_largo"))}
+		cantidad_enemigos.forEach{n => game.addVisual(n)}
+		cantidad_enemigos.forEach{n => game.onTick(1600.randomUpTo(2100), 'seguir_enemigos', {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
+
 	}
 	
 	method crear_jefes(){
