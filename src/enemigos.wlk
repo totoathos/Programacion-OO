@@ -37,7 +37,10 @@ class Enemigo_Corta_Distancia inherits Personajes{
     	destino_x = position.x() + if(posicion_heroe.x() > position.x()) 1 else -1
     	destino_y = position.y() + if(posicion_heroe.y() > position.y()) 1 else -1
     	
-    	self.mover(destino_x,destino_y)
+    	if (not(Oleada.comprobar_enemigos())){
+    		self.mover(destino_x,destino_y)
+    	}
+    	
     }
     
     
