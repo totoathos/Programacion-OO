@@ -79,7 +79,6 @@ class Heroe inherits Personajes{
     		matar1.forEach{a => 
     			a.vida(a.vida() - dano);
     			self.eliminar_adversario(a);
-    			return a 
     	}
     	
     	
@@ -89,7 +88,6 @@ class Heroe inherits Personajes{
              matar2.forEach{a => 
              	console.println(a);
     			self.eliminar_adversario(a);
-    			return a
     		}
     	}
     	}
