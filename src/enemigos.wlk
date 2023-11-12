@@ -7,7 +7,7 @@ class Enemigo_Corta_Distancia inherits Personajes{
     var property x = 5.randomUpTo(20).truncate(0)
     var property y = 5.randomUpTo(12).truncate(0)
     var property position = game.at(x,y)
-    const property tipo = "enemigo"
+    var property tipo = "enemigo_corto"
     var destino_x = 0
     var destino_y = 0
     var rango = []
@@ -45,31 +45,59 @@ class Enemigo_Corta_Distancia inherits Personajes{
     	position = game.at(destinox,destinoy)
     }
 }
-class Proyectil inherits Enemigo_Corta_Distancia{
-	override method ataque(entidad){
-    	if (entidad.estado() == "protegido"){
-            entidad.estamina(entidad.estamina()-10)
-            }
-        entidad.vida(entidad.vida() - dano)
-        
+
+class Proyectil {
+	var property position
+	const direccion = heroe.position()
+	
+    method image() = "fuego.jpg"
+    
+    method impacto(){
+    	return(direccion == position)
     }
-    override method image() = "fuego.jpg"
+    
+    method ir_hacia_objetivo(){
+    	
+    	var x =if(direccion.x()>position.x()) 1 else -1
+    	var y =if(direccion.y()>position.y()) 1 else -1
+    	
+    	position = game.at(x,y)
+    }
+    
+    method ataque(){
+    }
+    
 }
 
 class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
-
-    method disparar(enemigo){
-    	var posicion_heroe = heroe.position()
-    	(enemigo.position(x)).forEach{n => if(posicion_heroe.x() > n){game.addVisual(proyectil)}}
+	var property rangos_disparo = []
+	
+	method disparar(){
+		self.check_disparo()
+    	game.schedule(500, {const proyectil = new Proyectil(position = self.position())})	
+    	
     }
     
-    override method ataque(entidad){
-    	if (entidad.estado() == "protegido"){
-            entidad.estamina(entidad.estamina()-10)
-            }
-        entidad.vida(entidad.vida() - dano)
-        
-    }
     override method image() = "enemigo.jpg"
     
+    method anadir_rangos_disparo(){
+    	var direcciones = [
+        	[position.x()+1, position.y()],
+        	[position.x(), position.y()+1],
+        	[position.x()-1, position.y()],
+        	[position.x(), position.y()-1]
+    	]
+
+    	rangos_disparo = []
+    	direcciones.forEach{ direccion =>
+        	(1..5).forEach{casilla =>
+            	rangos_disparo.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
+        		}
+    		}
+    	}
+    	
+    method check_disparo(){
+    	self.anadir_rangos_disparo()
+    	rangos_disparo.forEach{n => if(n == heroe.position()) return true}
+    }
 }
