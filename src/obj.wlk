@@ -6,7 +6,7 @@ const personajes = game.allVisuals()
 
 class Personajes{
     var property vida = 100
-    var property dano = 50
+    var property dano = 1000
     
     method ataque(entidad){
         entidad.vida(entidad.vida() - dano)
@@ -20,8 +20,8 @@ class Personajes{
     
     method eliminar_adversario(adversario){
     	if(self.comprobar_vida(adversario)){
-    		Oleada.cantidad_enemigos().remove(adversario)
     		game.removeVisual(adversario)
+    		Oleada.cantidad_enemigos().remove(adversario)
     	}
     }   
     
