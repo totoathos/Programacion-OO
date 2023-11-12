@@ -10,8 +10,7 @@ program juego {
     game.title("dungeon")
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    Oleada.cantidad_enemigos().forEach{n => game.addVisual(n)}
-    Oleada.cantidad_enemigos().forEach{n => game.onTick(1600.randomUpTo(2100), 'Perseguir', {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)} ; console.println(heroe.vida())})}
+    Oleada.cantidad_enemigos().forEach{n => game.onTick(100, 'comprobar_oleada' ,{if(Oleada.comprobar_enemigos()) {game.removeTickEvent('seguir_enemigos') ; Oleada.avanzar_oleadas()}}) ; console.println(heroe.vida())}
     Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
     // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
@@ -25,6 +24,7 @@ program juego {
     //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
 	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
 	keyboard.f().onPressDo{heroe.proteger()}
+	keyboard.g().onPressDo{console.println(Oleada.cantidad_enemigos())}
 	
 	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comprobar en nuestros tests
     //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
