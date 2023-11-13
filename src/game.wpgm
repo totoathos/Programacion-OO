@@ -11,8 +11,8 @@ program juego {
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
     Oleada.cantidad_enemigos().forEach{n => game.onTick(100, 'comprobar_oleada' ,{if(Oleada.comprobar_enemigos()) {game.removeTickEvent('seguir_enemigos') ; Oleada.avanzar_oleadas()}}) ; console.println(heroe.vida())}
-    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
-    // remover tick al momento de ser atacado
+    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){game.onTick(5000, 'Disparar', {n.disparar()})}}
+    game.onTick(100, 'Analizar disparo', {Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=='proyectil'){n.ir_hacia_objetivo()}}})
     game.addVisualCharacter(heroe)
     
     game.onCollideDo(heroe, {enemigo => 
