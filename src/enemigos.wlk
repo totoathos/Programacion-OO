@@ -51,23 +51,36 @@ class Enemigo_Corta_Distancia inherits Personajes{
 
 class Proyectil {
 	var property position
+	const dano = 10
 	const direccion = heroe.position()
+	var property tipo = 'proyectil'
+	var visual = game.addVisual(self)
 	
     method image() = "fuego.jpg"
     
     method impacto(){
+    	console.println('en proceso...')
     	return(direccion == position)
     }
     
-    method ir_hacia_objetivo(){
-    	
-    	var x =if(direccion.x()>position.x()) 1 else -1
-    	var y =if(direccion.y()>position.y()) 1 else -1
-    	
-    	position = game.at(x,y)
+    method verificar_impacto_con_heroe(){
+    	console.println('verificando...')
+    	return(position==heroe.position())
     }
     
-    method ataque(){
+    method ir_hacia_objetivo(){
+    	var x = position.x() + if(direccion.x()>position.x()) 1 else -1
+    	var y = position.y() + if(direccion.y()>position.y()) 1 else -1
+    	
+    	position =game.at(x,y)
+    	if (self.impacto() or self.verificar_impacto_con_heroe()){console.println('despawneo');game.removeVisual(self); Oleada.cantidad_enemigos().remove(self)}
+    }
+    
+    method ataque(entidad){
+    	if((self.impacto() and self.verificar_impacto_con_heroe())){
+    		entidad.vida(entidad.vida() - dano);
+    		console.println('xd')
+    		}
     }
     
 }
@@ -77,7 +90,7 @@ class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 	
 	method disparar(){
 		self.check_disparo()
-    	game.schedule(500, {const proyectil = new Proyectil(position = self.position())})	
+    	Oleada.cantidad_enemigos().add(new Proyectil(position = self.position()))
     	
     }
     
@@ -85,10 +98,10 @@ class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
     
     method anadir_rangos_disparo(){
     	var direcciones = [
-        	[position.x()+1, position.y()],
-        	[position.x(), position.y()+1],
-        	[position.x()-1, position.y()],
-        	[position.x(), position.y()-1]
+        	[1,0],
+        	[0,1],
+        	[-1,0],
+        	[0,-1]
     	]
 
     	rangos_disparo = []
