@@ -1,6 +1,7 @@
 import wollok.game.*
 import objaa.*
 import enemigos.*
+import oleadas.*
 
 const personajes = game.allVisuals()
 
@@ -20,6 +21,7 @@ class Personajes{
     
     method eliminar_adversario(adversario){
     	if(self.comprobar_vida(adversario)){
+    		adversario.position(game.at(-900,-900))
     		game.removeVisual(adversario)
     		Oleada.cantidad_enemigos().remove(adversario)
     	}
@@ -27,10 +29,28 @@ class Personajes{
     
 }
 
+object menu{
+	var property position = game.at(0,0)
+	const property blanco = "FFFFFF"
+	var property nivel = 1
+	var property tipo = "menu"
+	
+	method sumar_oleada(){
+		nivel += 1
+	}
+	method text() = "Oleada " + nivel
+	
+	method textColor() = self.blanco()
+}
+
 class Jefes inherits Personajes{
 	
-	const position = game.center()
-	var rango = [game.at(position.x()-1,position.y()), game.at(position.x()-2,position.y()),game.at(position.x()+1,position.y()), game.at(position.x()+2,position.y()), game.at(position.x(),position.y()+1), game.at(position.x(),position.y())+2, game.at(position.x(),position.y()-1), game.at(position.x(),position.y()-2)]
+	var visual = game.addVisual(self)
+	
+	const property tipo = "Jefe"
+	
+	var property position = game.center()
+	var rango = []
 	
 	method image() = "variable.jpg"
 	
@@ -38,16 +58,32 @@ class Jefes inherits Personajes{
 		Oleada.crear_enemigos()
 	}
 	
-	
-	method comprobar_ataque(){
-   		var buscar_heroe = game.getObjectsIn(rango)
-    	if (not(buscar_heroe.isEmpty())){
-    		buscar_heroe.forEach{heroe=> 
-    			heroe.vida(heroe.vida() - dano);
-    			self.eliminar_adversario(heroe);
-    			return heroe}
-    	}
+	method comprobar_atacar(){
+		self.anadir_rangos_disparo()
+    	rango.forEach{n => if(n == heroe.position()) return true}
 	}
+	
+	override method ataque(enemigo){
+		self.comprobar_atacar()
+		heroe.vida(heroe.vida()-dano)
+	}
+	
+	method anadir_rangos_disparo(){
+    	var direcciones = [
+        	[1,0],
+        	[0,1],
+        	[-1,0],
+        	[0,-1]
+    	]
+
+    	rango = []
+    	direcciones.forEach{ direccion =>
+        	(1..5).forEach{casilla =>
+            	rango.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
+        		}
+    		}
+    	}
+	
 	
 }
 
