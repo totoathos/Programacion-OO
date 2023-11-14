@@ -72,22 +72,22 @@ class Heroe inherits Personajes{
     
     method comprobar_ataque(){
    		
-   		var matar1 = game.getObjectsIn(rangos.get(0))
-   		var matar2 = game.getObjectsIn(rangos.get(1))
+   		var buscar1 = game.getObjectsIn(rangos.get(0))
+   		var buscar2 = game.getObjectsIn(rangos.get(1))
 		//if((rangos.contains(enemigo.x())) and position.y() == enemigo.y() or (rangos.contains(enemigo.y())) and position.x() == enemigo.x()){console.println("atacando");enemigo.vida(enemigo.vida() - dano)}
-    	if (not(matar1.isEmpty())) {
-    		matar1.forEach{a => 
-    			a.vida(a.vida() - dano);
-    			self.eliminar_adversario(a);
+    	if (not(buscar1.isEmpty())) {
+    		buscar1.forEach{enemy => 
+    			enemy.vida(enemy.vida() - dano);
+    			self.eliminar_adversario(enemy);
+    			return enemy
     	}
     	
-    	
-    	}
-    	
-    	if (not(matar2.isEmpty())){
-             matar2.forEach{a => 
-             	console.println(a);
-    			self.eliminar_adversario(a);
+    	} 
+    	if (not(buscar2.isEmpty())){
+             buscar2.forEach{enemy => 
+             	enemy.vida(enemy.vida() - dano);
+    			self.eliminar_adversario(enemy);
+    			return enemy
     		}
     	}
     	}
