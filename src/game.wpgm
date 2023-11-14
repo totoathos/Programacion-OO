@@ -9,13 +9,17 @@ program juego {
     game.boardGround("fondo.jpg")
     game.title("dungeon")
     game.addVisual(Menu)
-    //coleccion creada para almacenar a los enemigos
+    //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    Oleada.cantidad_enemigos().forEach{n => game.onTick(100, 'comprobar_oleada' ,{if(Oleada.comprobar_enemigos()) {game.removeTickEvent('seguir_enemigos') ; Oleada.avanzar_oleadas()}}) ; console.println(heroe.vida())}
-    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){game.onTick(2000, "disparo",{n.disparar() ; console.println("Disparando")})}}
-    game.addVisualCharacter(heroe)    
+    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
+    // remover tick al momento de ser atacado
+    game.addVisualCharacter(heroe)
     
+    game.onCollideDo(heroe, {enemigo => if(not(enemigo.tipo()=="menu")){enemigo.ataque(heroe)}
+    	})
     
+    game.onTick(10000, 'Ataque de jefe', {if((Oleada.nivel() == 5) or (Oleada.nivel() == 10)){Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=='Jefe'){n.ataque(heroe)}}}})
+   
     //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
 	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
 	keyboard.f().onPressDo{heroe.proteger()}
@@ -32,6 +36,4 @@ program juego {
     
 
     game.start()
-    
 }
-
