@@ -84,7 +84,7 @@ class Heroe inherits Personajes{
     	
     	} 
     	if (not(buscar2.isEmpty())){
-             buscar2.forEach{enemy => 
+             buscar2.forEach{enemy =>
              	enemy.vida(enemy.vida() - dano);
     			self.eliminar_adversario(enemy);
     			return enemy
@@ -99,8 +99,7 @@ class Heroe inherits Personajes{
     		
     		self.cambiar_estado("atacando")
     		self.comprobar_ataque()
-  			//self.eliminar_adversario(entidad)
-  			}		
+  			}	
 	}
 	
 	method mover(destinox,destinoy){
