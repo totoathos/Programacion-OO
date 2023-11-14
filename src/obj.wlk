@@ -7,7 +7,7 @@ const personajes = game.allVisuals()
 
 class Personajes{
     var property vida = 100
-    var property dano = 1000
+    var property dano = 200
     
     method ataque(entidad){
         entidad.vida(entidad.vida() - dano)
@@ -23,6 +23,8 @@ class Personajes{
     	var contador = 0
     	var indice = 0
     	if(self.comprobar_vida(adversario)){
+    		if(adversario.tipo() == "Jefe"){
+    			game.stop()}
     		game.removeVisual(adversario)
     		Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo == adversario){indice = contador} ; contador += 1}
     		Oleada.cantidad_enemigos().remove(adversario)
@@ -34,7 +36,7 @@ class Personajes{
 }
 
 object menu{
-	var property position = game.at(0,0)
+	var property position = game.at(1,13)
 	const property blanco = "FFFFFF"
 	var property nivel = 1
 	var property tipo = "menu"
@@ -42,7 +44,7 @@ object menu{
 	method sumar_oleada(){
 		nivel += 1
 	}
-	method text() = "Oleada " + nivel
+	method text() = "       " + "Oleada " + nivel + "  " + "Vida: " + heroe.vida()
 	
 	method textColor() = self.blanco()
 }
@@ -112,7 +114,7 @@ class Puas{
 	
 	
 	method ataque(jugador){
-		if((self.comprobar_posicion_jugador()) and (position==jugador.position())){
+		if((self.comprobar_posicion_jugador())){
 			(jugador.vida(jugador.vida() - dano))
 			console.println(heroe.vida())
 			self.desaparecer()
@@ -125,4 +127,3 @@ class Puas{
 	}
 	
 }
-
