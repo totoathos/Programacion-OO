@@ -11,7 +11,7 @@ program juego {
     game.addVisual(Menu)
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    game.onTick(2000,'analizar Ataque',{Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo.tipo()=="enemigo_largo"){game.onTick(6000, "disparo", {if(enemigo.vida()>0){enemigo.disparar()}})}}})
+    game.onTick(2000,'analizar Ataque',{Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo.tipo()=="enemigo_largo" and enemigo.vida()>0){enemigo.disparar()}}})
     // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
     
@@ -22,7 +22,7 @@ program juego {
 	keyboard.f().onPressDo{heroe.proteger()}
 	keyboard.g().onPressDo{console.println(Oleada.cantidad_enemigos())}
 	
-	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comprobar en nuestros tests
+	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comptrobar en nuestros tests
     //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
     //keyboard.g().onPressDo{ game.say(heroe, "Vida:" + heroe.vida())}
     
