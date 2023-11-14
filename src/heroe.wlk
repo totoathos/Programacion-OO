@@ -61,6 +61,21 @@ class Heroe inherits Personajes{
     }
     
     method proteger(){
+        if(direccion == "arriba"){
+        	direccion = "arriba_cubriendose"
+        }
+        
+        if(direccion == "abajo"){
+        	direccion = "abajo_cubriendose"
+        }
+        
+        if(direccion == "der"){
+        	direccion = "der_cubriendose"
+        }
+        
+        if(direccion == "izq"){
+        	direccion = "izq_cubriendose"
+        }
         self.cambiar_estado("protegido")
     }
     
