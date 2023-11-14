@@ -28,7 +28,7 @@ class Personajes{
     		Oleada.cantidad_enemigos().remove(adversario)
     		game.removeTickEvent(adversario.numero())
     		if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}
-    	}
+    	 }
     }   
     
 }
@@ -51,7 +51,7 @@ object menu{
 
 class Jefes inherits Personajes{
 	
-	var property position = game.center()
+	var property position = game.at(10,10)
 	var rango = []
 	var property tipo = 'Jefe'
 	var visual = game.addVisual(self)
@@ -60,22 +60,16 @@ class Jefes inherits Personajes{
 	
 	method image() = "jefe1.png"
 	
-	method invocar_enemigos(){
-		Oleada.crear_enemigos()
-	}
 	
 	method comprobar_atacar(){
 		self.anadir_rangos_disparo()
     	rango.forEach{n => if(n == heroe.position()) return true}
 	}
 	
-	override method ataque(enemigo){
+	override method ataque(heroee){
 		self.comprobar_atacar()
-		if (dificultad==1){
+		if (dificultad==1 or dificultad==1.25){
 			self.pinchos()
-		}
-		if (dificultad==1.25){
-			self.invocar_enemigos()
 		}
 		heroe.vida(heroe.vida()-dano)
 	}
