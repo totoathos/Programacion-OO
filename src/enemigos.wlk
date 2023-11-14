@@ -74,6 +74,7 @@ class Proyectil {
 	var property tipo = "proyectil"
 	var imagen = ""
 	var property lanzado = false
+    var property numero = ""
    
     method image() = "fuego.png"
     
@@ -158,8 +159,7 @@ class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 		if (not(proyectil.lanzado())){
 			proyectil.iniciar_disparo(position, direccion)
 			game.onTick(250, "movimiento", {proyectil.avanzar()})
-			proyectil.lanzado(true) 
-			
+			proyectil.lanzado(true)
 		}
     
     }
