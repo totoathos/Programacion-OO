@@ -10,9 +10,9 @@ class Heroe inherits Personajes{
     var property position = game.center()
     const property tipo = "heroe"
     var property rangos = []
-    var property direccion = "Abajo"
+    var property direccion = "der"
     
-    method image() = "pj.jpg"
+    method image() = "pj_" + direccion + ".png"
     
     method aumentar_estamina(){
     	if (estamina <= 91){estamina += 10}
@@ -27,22 +27,22 @@ class Heroe inherits Personajes{
     method definir_rangos(){
 	  rangos.clear()
 	  
-	  if(direccion == "Arriba"){
+	  if(direccion == "arriba"){
 	    rangos = [game.at(position.x(),position.y()+1), game.at(position.x(),position.y()+2)]
 	  }
 	  
-	  if(direccion == "Abajo"){
+	  if(direccion == "abajo"){
 	  	//rangos = [[position.x(),position.y()-1], [position.x(),position.y()-2]]
 	    rangos = [game.at(position.x(),position.y()-1), game.at(position.x(),position.y()-2)]
 	  
 	  }
 	  
-	  if(direccion == "Derecha"){
+	  if(direccion == "der"){
 	  	
 	    rangos = [game.at(position.x()+1,position.y()), game.at(position.x()+2,position.y())]
 	  	}
 	  
-	  if(direccion == "Izquierda"){
+	  if(direccion == "izq"){
 	    rangos = [game.at(position.x()-1,position.y()), game.at(position.x()-2,position.y())]
 	  	}
 	  
