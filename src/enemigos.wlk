@@ -7,11 +7,12 @@ class Enemigo_Corta_Distancia inherits Personajes{
     var property x = 5.randomUpTo(20).truncate(0)
     var property y = 5.randomUpTo(12).truncate(0)
     var property position = game.at(x,y)
+    var property visual = game.addVisual(self)
     var property tipo = "enemigo_corto"
-    var property direccion = "derecha"
     var destino_x = 0
     var destino_y = 0
     var rango = []
+    var property numero = ""
     
     method image() = "enemigo1.jpg"
     
@@ -33,28 +34,15 @@ class Enemigo_Corta_Distancia inherits Personajes{
    	}
    	
     
-    method seguir(entidad){
-    	var posicion_entidad = entidad.position()
+    method seguir(heroe){
+    	var posicion_heroe = heroe.position()
+    	destino_x = position.x() + if(posicion_heroe.x() > position.x()) 1 else -1
+    	destino_y = position.y() + if(posicion_heroe.y() > position.y()) 1 else -1
     	
-    	if(posicion_entidad.x() > position.x()){
-    		self.mover(position.x() + 1, position.y())
-    		direccion = "derecha"
+    	if (not(Oleada.comprobar_enemigos())){
+    		self.mover(destino_x,destino_y)
     	}
     	
-    	else if(posicion_entidad.x() < position.x()){
-    		self.mover(position.x() - 1, position.y())
-    		direccion = "izquierda"
-    	}
-    	
-    	else if(posicion_entidad.y() > position.y()){
-    		self.mover(position.x(), position.y() + 1)
-    		direccion = "arriba"
-    	}
-    	
-    	else {
-    		self.mover(position.x(), position.y() - 1)
-    		direccion = "abajo"
-    	}
     }
     
     
@@ -65,91 +53,56 @@ class Enemigo_Corta_Distancia inherits Personajes{
 
 class Proyectil {
 	var property position
-	const dano = 10
-	var direccion 
-	var property tipo = "proyectil"
-	var property lanzado = false
-    method image() = "fuego.png"
+	const direccion = heroe.position()
+	
+    method image() = "fuego.jpg"
     
+    method impacto(){
+    	return(direccion == position)
+    }
     
+    method ir_hacia_objetivo(){
+    	
+    	var x =if(direccion.x()>position.x()) 1 else -1
+    	var y =if(direccion.y()>position.y()) 1 else -1
+    	
+    	position = game.at(x,y)
+    }
     
-   	method cambiar_direccion(nueva_orientacion){
-   		direccion = nueva_orientacion
-   	}
-   
-   	method cambiar_posicion(nueva_posicion){
-   		position = nueva_posicion
-   	}
-   
-   	method avanzar(){
-   		
-   		if(direccion == "derecha"){
-   			self.position(position.right(1))
-   		}
-   		
-   		if(direccion == "izquierda"){
-   			self.position(position.left(1))
-   		}
-   		
-   		if(direccion == "arriba"){
-   			self.position(position.up(1))
-   		}
-
-   		if(direccion == "abajo"){
-   			self.position(position.down(1))
-   		}
-
-   	}
-   	
-   	method comprobacion(){
-   		
-   		if(self.position().x() > game.width() - 1 or
-   		   self.position().x() < 0 				  or
-   		   self.position().y() > game.height() 	  or
-   		   self.position().y() < 0)
-   		   		{self.eliminar()}
-   	}
-   	   
-	   
-   	method eliminar(){
-   		lanzado = false		
-   		self.cambiar_posicion(game.at(0,0))
-   		game.removeVisual(self)
-   		
-   	}
-   
-   	method iniciar_disparo(posicion, orientacion){
-   		game.addVisual(self)
-   		self.cambiar_direccion(orientacion)
-   		self.cambiar_posicion(posicion)
-   		game.onCollideDo(self, {entidad =>
-   			if(entidad.tipo() == "heroe"){
-   				entidad.vida(entidad.vida() - dano)	
-   				self.eliminar()
-   				if(entidad.vida() < 0){
-   					game.stop()
-   					
-   					}
-   			}
-   		})
-   	}
+    method ataque(){
+    }
     
 }
 
-
-
 class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
+	var property rangos_disparo = []
 	
 	method disparar(){
-		const proyectil = new Proyectil(position = position, direccion = direccion)
-		if (not(proyectil.lanzado())){
-			proyectil.iniciar_disparo(position, direccion)
-			game.onTick(500, "movimiento", {proyectil.avanzar()})
-			proyectil.lanzado(true) 
-			
-		}
+		self.check_disparo()
+    	game.schedule(500, {const proyectil = new Proyectil(position = self.position())})	
     	
     }
     
     override method image() = "enemigo.jpg"
+    
+    method anadir_rangos_disparo(){
+    	var direcciones = [
+        	[position.x()+1, position.y()],
+        	[position.x(), position.y()+1],
+        	[position.x()-1, position.y()],
+        	[position.x(), position.y()-1]
+    	]
+
+    	rangos_disparo = []
+    	direcciones.forEach{ direccion =>
+        	(1..5).forEach{casilla =>
+            	rangos_disparo.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
+        		}
+    		}
+    	}
+    	
+    method check_disparo(){
+    	self.anadir_rangos_disparo()
+    	rangos_disparo.forEach{n => if(n == heroe.position()) return true}
+    }
 }
