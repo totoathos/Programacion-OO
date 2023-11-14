@@ -11,12 +11,11 @@ program juego {
     game.addVisual(Menu)
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
+    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){game.onTick(6000, "disparo", {n.disparar()})}}
     // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
     
-    game.onCollideDo(heroe, {enemigo => if(not(enemigo.tipo()=="menu")){enemigo.ataque(heroe)}
-    	})
+    
     
     game.onTick(10000, 'Ataque de jefe', {if((Oleada.nivel() == 5) or (Oleada.nivel() == 10)){Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=='Jefe'){n.ataque(heroe)}}}})
    
@@ -29,10 +28,10 @@ program juego {
     //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
     //keyboard.g().onPressDo{ game.say(heroe, "Vida:" + heroe.vida())}
     
-    keyboard.up().onPressDo{heroe.cambiar_direccion("Arriba")}
-    keyboard.right().onPressDo{heroe.cambiar_direccion("Derecha")}
-    keyboard.down().onPressDo{heroe.cambiar_direccion("Abajo")}
-    keyboard.left().onPressDo{heroe.cambiar_direccion("Izquierda")}
+    keyboard.up().onPressDo{heroe.cambiar_direccion("arriba")}
+    keyboard.right().onPressDo{heroe.cambiar_direccion("der")}
+    keyboard.down().onPressDo{heroe.cambiar_direccion("abajo")}
+    keyboard.left().onPressDo{heroe.cambiar_direccion("izq")}
     
 
     game.start()
