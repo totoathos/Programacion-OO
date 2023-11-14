@@ -11,13 +11,11 @@ program juego {
     game.addVisual(Menu)
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){game.onTick(6000, "disparo", {n.disparar()})}}
+    game.onTick(2000,'analizar Ataque',{Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo.tipo()=="enemigo_largo"){game.onTick(6000, "disparo", {if(enemigo.vida()>0){enemigo.disparar()}})}}})
     // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
     
-    
-    
-    game.onTick(10000, 'Ataque de jefe', {if((Oleada.nivel() == 5) or (Oleada.nivel() == 10)){Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=='Jefe'){n.ataque(heroe)}}}})
+    game.onTick(10000, 'Ataque de jefe', {if((Oleada.nivel() == 5) or (Oleada.nivel() == 10)){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
    
     //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
 	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
