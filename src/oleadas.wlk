@@ -6,7 +6,8 @@ import enemigos.*
 class Oleadas{
 	var property cantidad_enemigos = []
 	var property cantidad_jefes = []
-	var generador_enemigos = 5.randomUpTo(6).truncate(0)
+	var property cantidad_puas= []
+	var generador_enemigos = 1.randomUpTo(2).truncate(0)
 	var dificultad = 1
 	var property nivel = 1
 	
@@ -33,8 +34,14 @@ class Oleadas{
 	
 	method avanzar_oleadas(){
 			nivel += 1
-			Menu.sumar_oleada()
-			self.crear_enemigos()
+			if(not(nivel == 5 or nivel ==10)){
+				Menu.sumar_oleada()
+				self.crear_enemigos()
+			}
+			if((self.comprobar_enemigos()) and cantidad_jefes.isEmpty()){
+				Menu.sumar_oleada()
+				self.crear_enemigos()
+			}
 			
 		
 	}
