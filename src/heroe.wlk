@@ -79,33 +79,27 @@ class Heroe inherits Personajes{
         self.cambiar_estado("protegido")
     }
     
-    method ataque_especial(enemigo){
-        self.comprobar_estamina()
-        estamina -= 10
-        return enemigo.vida((enemigo.vida()-(dano * 1.5)))
-    }
+    
     
     method comprobar_ataque(){
    		
-   		var buscar1 = game.getObjectsIn(rangos.get(0))
-   		var buscar2 = game.getObjectsIn(rangos.get(1))
-		//if((rangos.contains(enemigo.x())) and position.y() == enemigo.y() or (rangos.contains(enemigo.y())) and position.x() == enemigo.x()){console.println("atacando");enemigo.vida(enemigo.vida() - dano)}
-    	if (not(buscar1.isEmpty())) {
-    		buscar1.forEach{enemy => 
-    			enemy.vida(enemy.vida() - dano);
-    			self.eliminar_adversario(enemy);
-    			return enemy
-    	}
-    	
-    	} 
-    	if (not(buscar2.isEmpty())){
-             buscar2.forEach{enemy =>
-             	enemy.vida(enemy.vida() - dano);
-    			self.eliminar_adversario(enemy);
-    			return enemy
-    		}
-    	}
-    	}
+	   		var buscar1 = game.getObjectsIn(rangos.get(0))
+	   		var buscar2 = game.getObjectsIn(rangos.get(1))
+			//if((rangos.contains(enemigo.x())) and position.y() == enemigo.y() or (rangos.contains(enemigo.y())) and position.x() == enemigo.x()){console.println("atacando");enemigo.vida(enemigo.vida() - dano)}
+	    	if (not(buscar1.isEmpty())) {
+	    		buscar1.forEach{enemy => 
+	    			if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	    			self.eliminar_adversario(enemy);
+	    			return enemy}}
+	    	} 
+	    		
+	    	if (not(buscar2.isEmpty())){
+	             buscar2.forEach{enemy =>
+	             	if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	    			self.eliminar_adversario(enemy);
+	    			return enemy}
+	    			}}
+	    	}
     	
 
     method ataque(){
