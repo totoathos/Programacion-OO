@@ -72,11 +72,11 @@ class Proyectil {
 	const dano = 10
 	var direccion 
 	var property tipo = "proyectil"
-	var imagen = ""
+	var imagen = "der"
 	var property lanzado = false
     var property numero = ""
    
-    method image() = "fuego.png"
+    method image() = "fuego_" + imagen + ".png"
     
     
     
@@ -92,23 +92,23 @@ class Proyectil {
    		
    		if(direccion == "der"){
    			self.position(position.right(1))
-   			imagen = "D"
+   			imagen = "der"
    		}
    		
    		if(direccion == "izq"){
    			self.position(position.left(1))
-   			imagen = "I"
+   			imagen = "izq"
    		}
    		
    		if(direccion == "arriba"){
    			self.position(position.up(1))
-   			imagen = "Ar"
+   			imagen = "arriba"
    			
    		}
 
    		if(direccion == "bajo"){
    			self.position(position.down(1))
-   			imagen = "Ab"
+   			imagen = "bajo"
    			
    		}
 
@@ -118,7 +118,7 @@ class Proyectil {
    		
    		if(self.position().x() > game.width() - 1 or
    		   self.position().x() < 0 				  or
-   		   self.position().y() > game.height() 	  or
+   		   self.position().y() > game.height() - 1 or
    		   self.position().y() < 0)
    		   		{self.eliminar()}
    	}
@@ -158,7 +158,7 @@ class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 		const proyectil = new Proyectil(position = position, direccion = direccion)
 		if (not(proyectil.lanzado())){
 			proyectil.iniciar_disparo(position, direccion)
-			game.onTick(250, "movimiento", {proyectil.avanzar()})
+			game.schedule(250, {proyectil.avanzar() ; proyectil.comprobacion()})
 			proyectil.lanzado(true)
 		}
     
