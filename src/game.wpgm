@@ -8,23 +8,21 @@ program juego {
     game.height(14)
     game.boardGround("fondo.jpg")
     game.title("dungeon")
+    game.addVisual(Menu)
     //coleccion creada para almzacenar a los enemigos
     Oleada.crear_enemigos()
-    Oleada.cantidad_enemigos().forEach{n => game.onTick(100, 'comprobar_oleada' ,{if(Oleada.comprobar_enemigos()) {game.removeTickEvent('seguir_enemigos') ; Oleada.avanzar_oleadas()}}) ; console.println(heroe.vida())}
-    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){game.onTick(5000, 'Disparar', {n.disparar()})}}
-    game.onTick(100, 'Analizar disparo', {Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=='proyectil'){n.ir_hacia_objetivo()}}})
+    Oleada.cantidad_enemigos().forEach{n => game.onTick(100, 'comprobar_oleada' ,{if(Oleada.comprobar_enemigos()) {game.removeTickEvent('seguir_enemigos') ; Oleada.avanzar_oleadas()}})}
+    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
+    // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
     
-    game.onCollideDo(heroe, {enemigo => 
-    	enemigo.ataque(heroe)
-    })
+    game.onCollideDo(heroe, {enemigo => if(not(enemigo.tipo()=="menu")){enemigo.ataque(heroe)}
+    	})
     
-    
-    
+    game.onTick(1000, "comprobacion", {console.println(game.allVisuals())})
     //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
 	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
 	keyboard.f().onPressDo{heroe.proteger()}
-	keyboard.g().onPressDo{console.println(Oleada.cantidad_enemigos())}
 	
 	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comprobar en nuestros tests
     //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
