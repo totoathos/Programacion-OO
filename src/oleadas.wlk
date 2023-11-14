@@ -33,13 +33,17 @@ class Oleadas{
 	}
 	
 	method avanzar_oleadas(){
-			nivel += 1
-			if(not(nivel == 5 or nivel ==10)){
+			
+			if(not(nivel == 10)){
+				nivel += 1
 				Menu.sumar_oleada()
+				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
 				self.crear_enemigos()
 			}
 			if((self.comprobar_enemigos()) and cantidad_jefes.isEmpty()){
+				nivel += 1
 				Menu.sumar_oleada()
+				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
 				self.crear_enemigos()
 			}
 			
@@ -53,7 +57,7 @@ class Oleadas{
 		cantidad_enemigos.forEach{n => game.addVisual(n)}
 		cantidad_enemigos.forEach{n=> game.onTick(1600.randomUpTo(2100), n.numero(), {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
 		
-		if(nivel == 5 or nivel == 10){
+		if(nivel == 10){
 			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad))
 			}
 	
