@@ -1,0 +1,37 @@
+import wollok.game.*
+import obj.*
+import objaa.*
+
+
+program juego {
+	game.width(30)
+    game.height(14)
+    game.boardGround("fondo.jpg")
+    game.title("dungeon")
+    game.addVisual(Menu)
+    //coleccion creada para almzacenar a los enemigos
+    Oleada.crear_enemigos()
+    Oleada.cantidad_enemigos().forEach{n => if(n.tipo()=="enemigo_largo"){n.disparar()}}
+    // remover tick al momento de ser atacado
+    game.addVisualCharacter(heroe)
+    
+    game.onCollideDo(heroe, {enemigo => if(not(enemigo.tipo()=="menu")){enemigo.ataque(heroe)}
+    	})
+    
+    game.onTick(1000, "comprobacion", {console.println(Oleada.cantidad_enemigos())})
+    //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
+	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
+	keyboard.f().onPressDo{heroe.proteger()}
+	
+	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comprobar en nuestros tests
+    //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
+    //keyboard.g().onPressDo{ game.say(heroe, "Vida:" + heroe.vida())}
+    
+    keyboard.up().onPressDo{heroe.cambiar_direccion("Arriba")}
+    keyboard.right().onPressDo{heroe.cambiar_direccion("Derecha")}
+    keyboard.down().onPressDo{heroe.cambiar_direccion("Abajo")}
+    keyboard.left().onPressDo{heroe.cambiar_direccion("Izquierda")}
+    
+
+    game.start()
+}
