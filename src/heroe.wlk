@@ -8,7 +8,6 @@ class Heroe inherits Personajes{
     var property estamina= 50
     var property estado = "normal"
     var property position = game.center()
-    const property tipo = "heroe"
     var property rangos = []
     var property direccion = "der"
     
@@ -88,14 +87,14 @@ class Heroe inherits Personajes{
 			//if((rangos.contains(enemigo.x())) and position.y() == enemigo.y() or (rangos.contains(enemigo.y())) and position.x() == enemigo.x()){console.println("atacando");enemigo.vida(enemigo.vida() - dano)}
 	    	if (not(buscar1.isEmpty())) {
 	    		buscar1.forEach{enemy => 
-	    			if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	    			if(not(enemy.tipo() == "heroe" or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}}
 	    	} 
 	    		
 	    	if (not(buscar2.isEmpty())){
 	             buscar2.forEach{enemy =>
-	             	if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	             	if(not(enemy.tipo() == "heroe"  or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}
 	    			}}
