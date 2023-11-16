@@ -3,11 +3,13 @@ import class_personajes.*
 import instancias.*
 
 class Enemigo_Corta_Distancia inherits Personajes{
+    
     //Por Default, asignamos que el enemigo global sea de corta distancia
-    var property x = [0, 28].anyOne()
+    
+    var property x = [0, 28].anyOne()  	//Se elige de manera "aleatoria" una posicion del eje X
     var property y = 2.randomUpTo(10).truncate(0)
     var property position = game.at(x,y)
-    var property id_tick = ""
+    var property id_tick = "" 		//Identificador para generar un tick propio
     
     method image() = "enemigo1_"+ direccion_personaje +".png"
     
@@ -34,7 +36,7 @@ class Enemigo_Corta_Distancia inherits Personajes{
     	
     	}
     
-   	method alejar(entidad){
+   	method alejar(entidad){		//Metodo que se usa para alejar al heroe una vez es golpeado
    		if(entidad.direccion_personaje()=="der"){entidad.mover_personaje(entidad.position().x() - 1, entidad.position().y())} ; 
         if(entidad.direccion_personaje()=="izq"){entidad.mover_personaje(entidad.position().x() + 1, entidad.position().y())} ; 
         if(entidad.direccion_personaje()=="arriba"){entidad.mover_personaje(entidad.position().x(), entidad.position().y() + 1)} ; 
@@ -42,7 +44,7 @@ class Enemigo_Corta_Distancia inherits Personajes{
    	}
    	
     
-    method seguir(entidad){
+    method seguir(entidad){		//Metodo hecho para seguir al heroe, se mueve en horizontal y vertical
     	var posicion_entidad = entidad.position()
     	
     	if(posicion_entidad.x() > position.x()){
@@ -119,7 +121,7 @@ class Proyectil {
 
    	}
    	
-   	method comprobacion(){
+   	method comprobacion(){		//Comprueba si el proyectil se fue del tablero, en ese caso lo elimina
    		
    		if(self.position().x() > game.width() - 1 or
    		   self.position().x() < 0 				  or
@@ -129,24 +131,24 @@ class Proyectil {
    	}
    	   
 	   
-   	method eliminar(){
+   	method eliminar(){		//Se elimina el proyectil del tablero y se remueve su tick
    		lanzado = false		
    		self.cambiar_posicion(game.at(0,0))
    		game.removeVisual(self)
    		game.removeTickEvent('Avanzando' + id.toString())
    	}
    
-   	method iniciar_disparo(posicion, orientacion){
-   		game.addVisual(self)
+   	method iniciar_disparo(posicion, orientacion){		//Es el metodo usado para iniciar el disparo del proyectil
+   		game.addVisual(self)				
    		self.cambiar_direccion(orientacion)
    		self.cambiar_posicion(posicion)
-   		game.onCollideDo(self, {entidad =>
+   		game.onCollideDo(self, {entidad => 	//En caso que colisione y la entidad sea el heroe le hace daño, se condiciona si es que el heroe esta protegido o no 
    			if(entidad.tipo() == "heroe"){
    				if(entidad.estado() == "protegido" and entidad.estamina() > 10){entidad.estamina(entidad.estamina()-10) ; entidad.vida(entidad.vida() - (dano / 2))}
    				else{entidad.vida(entidad.vida() - dano)}	
-   				self.eliminar()
+   				self.eliminar()				//Al hacer contacto se elimina a si mismo
    				if(entidad.vida() <= 0){
-   					game.stop()
+   					game.stop()				//Detiene el juego si es que el heroe llega a morir
    					
    				  }
    			   }
@@ -160,7 +162,7 @@ class Proyectil {
 
 class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 	
-	var identificador = 0.randomUpTo(1000)
+	var identificador = 0.randomUpTo(1000) //Identificador creado para darle un tick propio a los proyectiles, facilitando su eliminacion
 	
 	method disparar(){
 		const proyectil = new Proyectil(position = position, direccion = direccion_personaje, id=identificador)
@@ -187,15 +189,15 @@ class Jefes inherits Personajes{
 	method image() = "jefe1.png"
 	
 	
-	method comprobar_atacar(){
+	method comprobar_ataque(){
 		self.anadir_rangos_disparo()
     	rango.forEach{n => if(n == heroe.position()) return true}
 	}
 	
 	override method ataque(heroee){
-		self.comprobar_atacar()
-		if (dificultad==1 or dificultad==1.25){
-			self.pinchos()
+		self.comprobar_ataque()
+		if (dificultad==1 or dificultad==1.25){  	//Genera puas en caso que la dificultad sea la requerida
+			self.generar_puas()
 		}
 		heroe.vida(heroe.vida()-dano)
 	}
@@ -216,7 +218,7 @@ class Jefes inherits Personajes{
     		}
     	}
 
-	method pinchos(){
+	method generar_puas(){
 		Oleada.cantidad_puas().add(new Puas())
 	}
 	
