@@ -23,7 +23,7 @@ class Personajes{
     
     method eliminar_adversario(adversario){		//Metodo para remover al adversario del tablero, de su almacenamiento y su evento tick
     	if(self.comprobar_vida(adversario)){
-    		if(adversario.tipo() == "Jefe"){		//Si es el jefe se cierra el juego
+    		if(adversario.tipo() == "jefe"){		//Si es el jefe se cierra el juego
     			game.stop()}
     		game.removeVisual(adversario)
     		Oleada.cantidad_enemigos().remove(adversario)	//Se lo remueve de la coleccion donde se almacena
