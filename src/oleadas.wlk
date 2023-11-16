@@ -7,7 +7,7 @@ class Oleadas{
 	var property cantidad_enemigos = []
 	var property cantidad_jefes = []
 	var property cantidad_puas= []
-	var generador_enemigos = 5.randomUpTo(10).truncate(0)
+	var generador_enemigos = 5.randomUpTo(7).truncate(0)
 	var dificultad = 1
 	var property oleada = 1
 	
@@ -24,8 +24,8 @@ class Oleadas{
 			return "intermedio"
 		}
 		
-		oleada = 1
-		return " "
+		
+		return " " 
 	}
 	
 	method comprobar_enemigos(){		//Comprueba si la coleccion donde se almacenan enemigos esta vacia
