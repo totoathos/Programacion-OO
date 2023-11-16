@@ -189,17 +189,19 @@ class Jefes inherits Personajes{
 	method image() = "jefe1.png"
 	
 	
-	method comprobar_ataque(){
+	method comprobar_ataque(protagonista){
+		var medidor = 0
 		self.anadir_rangos_disparo()
-    	rango.forEach{n => if(n == heroe.position()) return true}
+    	rango.forEach{casilla => if(casilla == protagonista.position()){medidor+=1}}
+    	return(0<medidor)
 	}
 	
-	override method ataque(heroee){
-		self.comprobar_ataque()
+	override method ataque(protagonista){
 		if (dificultad==1 or dificultad==1.25){  	//Genera puas en caso que la dificultad sea la requerida
 			self.generar_puas()
 		}
-		heroe.vida(heroe.vida()-dano)
+		if(self.comprobar_ataque(protagonista)){protagonista.vida(protagonista.vida()-dano)}
+		if(protagonista.vida() <= 0){game.stop()}
 	}
 	
 	method anadir_rangos_disparo(){
@@ -207,13 +209,12 @@ class Jefes inherits Personajes{
         	[1,0],
         	[0,1],
         	[-1,0],
-        	[0,-1]
-    	]
+        	[0,-1]]
 
     	rango = []
     	direcciones.forEach{ direccion =>
         	(1..5).forEach{casilla =>
-            	rango.add(game.at(position.x() + casilla * direccion_personaje.get(0), position.y() + casilla * direccion_personaje.get(1)))
+            	rango.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
         		}
     		}
     	}
@@ -228,7 +229,7 @@ class Puas{
 	var property x = 5.randomUpTo(20).truncate(0)
     var property y = 5.randomUpTo(12).truncate(0)
 	var property position = game.at(x,y)
-	var property tipo = 'Puas'
+	var property tipo = 'puas'
 	var dano = 10
 	var visual = game.addVisual(self)
 	
@@ -240,16 +241,18 @@ class Puas{
 	
 	
 	method ataque(jugador){
-		if((self.comprobar_posicion_jugador())){
-			(jugador.vida(jugador.vida() - dano))
-			console.println(heroe.vida())
-			self.desaparecer()
-		}
+		if(self.comprobar_posicion_jugador()){
+			(jugador.vida(jugador.vida() - dano));
+			self.desaparecer()}
+			
+		if(heroe.vida() <= 0){
+			game.stop()}
+		
 	}
 	
 	method desaparecer(){
-		game.removeVisual(self)
 		Oleada.cantidad_puas().remove(self)
+		game.removeVisual(self)
 	}
 	
 }
