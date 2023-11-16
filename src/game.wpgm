@@ -1,6 +1,6 @@
 import wollok.game.*
 import class_personajes.*
-import objaa.*
+import instancias.*
 
 
 program juego {
