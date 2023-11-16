@@ -53,12 +53,12 @@ class Oleadas{
 	//para crear los enemigos evaluamos la oleada para determinar la dificultad
 	method crear_enemigos(){
 		var contador = 0
-		(1 .. generador_enemigos).forEach{n => const numero_a = contador.toString() + "a"; const numero_b = contador.toString() + "b" ; cantidad_enemigos.add(new Enemigos_Larga_Distancia(numero = numero_a , vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_largo")); cantidad_enemigos.add(new Enemigo_Corta_Distancia(numero= numero_b ,vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_corto"))}
+		(1 .. generador_enemigos).forEach{n => const numero_a = contador.toString() + "a"; const numero_b = contador.toString() + "b" ; cantidad_enemigos.add(new Enemigos_Larga_Distancia(numero = numero_a , vida = 75*dificultad,dano = 30*dificultad, tipo="enemigo_largo")); cantidad_enemigos.add(new Enemigo_Corta_Distancia(numero= numero_b ,vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_corto"))}
 		cantidad_enemigos.forEach{n => game.addVisual(n)}
 		cantidad_enemigos.forEach{n=> game.onTick(1600.randomUpTo(2100), n.numero(), {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
 		
 		if(nivel == 10){
-			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad))
+			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad, tipo='Jefe'))
 			}
 	
 
