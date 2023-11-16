@@ -7,10 +7,9 @@ class Enemigo_Corta_Distancia inherits Personajes{
     var property x = [0, 28].anyOne()
     var property y = 2.randomUpTo(10).truncate(0)
     var property position = game.at(x,y)
-    var property direccion = "der"
-    var property numero = ""
+    var property id_tick = ""
     
-    method image() = "enemigo1_"+ direccion +".png"
+    method image() = "enemigo1_"+ direccion_personaje +".png"
     
     override method eliminar_adversario(adversario){
     	if(self.comprobar_vida(adversario)){
@@ -36,10 +35,10 @@ class Enemigo_Corta_Distancia inherits Personajes{
     	}
     
    	method alejar(entidad){
-   		if(entidad.direccion()=="der"){entidad.mover(entidad.position().x() - 1, entidad.position().y())} ; 
-        if(entidad.direccion()=="izq"){entidad.mover(entidad.position().x() + 1, entidad.position().y())} ; 
-        if(entidad.direccion()=="arriba"){entidad.mover(entidad.position().x(), entidad.position().y() + 1)} ; 
-        if(entidad.direccion() == "bajo"){entidad.mover(entidad.position().x(), entidad.position().y() - 1)}
+   		if(entidad.direccion_personaje()=="der"){entidad.mover_personaje(entidad.position().x() - 1, entidad.position().y())} ; 
+        if(entidad.direccion_personaje()=="izq"){entidad.mover_personaje(entidad.position().x() + 1, entidad.position().y())} ; 
+        if(entidad.direccion_personaje()=="arriba"){entidad.mover_personaje(entidad.position().x(), entidad.position().y() + 1)} ; 
+        if(entidad.direccion_personaje() == "bajo"){entidad.mover_personaje(entidad.position().x(), entidad.position().y() - 1)}
    	}
    	
     
@@ -47,28 +46,28 @@ class Enemigo_Corta_Distancia inherits Personajes{
     	var posicion_entidad = entidad.position()
     	
     	if(posicion_entidad.x() > position.x()){
-    		self.mover(position.x() + 1, position.y())
-    		direccion = "der"
+    		self.mover_personaje(position.x() + 1, position.y())
+    		direccion_personaje = "der"
     	}
     	
     	else if(posicion_entidad.x() < position.x()){
-    		self.mover(position.x() - 1, position.y())
-    		direccion = "izq"
+    		self.mover_personaje(position.x() - 1, position.y())
+    		direccion_personaje = "izq"
     	}
     	
     	else if(posicion_entidad.y() > position.y()){
-    		self.mover(position.x(), position.y() + 1)
-    		direccion = "arriba"
+    		self.mover_personaje(position.x(), position.y() + 1)
+    		direccion_personaje = "arriba"
     	}
     	
     	else {
-    		self.mover(position.x(), position.y() - 1)
-    		direccion = "bajo"
+    		self.mover_personaje(position.x(), position.y() - 1)
+    		direccion_personaje = "bajo"
     	}
     }
     
     
-    method mover(destinox,destinoy){
+    method mover_personaje(destinox,destinoy){
     	position = game.at(destinox,destinoy)
     }
 }
@@ -78,11 +77,11 @@ class Proyectil {
 	const dano = 10
 	var direccion 
 	var property tipo = "proyectil"
-	var imagen = "der"
+	var direccion_imagen = "der"
 	var property lanzado = false
     var property id
    
-    method image() = "fuego_" + imagen + ".png"
+    method image() = "fuego_" + direccion_imagen + ".png"
     
     
     
@@ -98,23 +97,23 @@ class Proyectil {
    		
    		if(direccion == "der"){
    			self.position(position.right(1))
-   			imagen = "der"
+   			direccion_imagen = "der"
    		}
    		
    		if(direccion == "izq"){
    			self.position(position.left(1))
-   			imagen = "izq"
+   			direccion_imagen = "izq"
    		}
    		
    		if(direccion == "arriba"){
    			self.position(position.up(1))
-   			imagen = "arriba"
+   			direccion_imagen = "arriba"
    			
    		}
 
    		if(direccion == "bajo"){
    			self.position(position.down(1))
-   			imagen = "bajo"
+   			direccion_imagen = "bajo"
    			
    		}
 
@@ -161,12 +160,12 @@ class Proyectil {
 
 class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 	
-	var identificador = 0
+	var identificador = 0.randomUpTo(1000)
 	
 	method disparar(){
-		const proyectil = new Proyectil(position = position, direccion = direccion, id=identificador)
+		const proyectil = new Proyectil(position = position, direccion = direccion_personaje, id=identificador)
 		if (not(proyectil.lanzado())){
-			proyectil.iniciar_disparo(position, direccion)
+			proyectil.iniciar_disparo(position, direccion_personaje)
 			game.onTick(250, 'Avanzando' + identificador.toString() , {proyectil.avanzar() ; proyectil.comprobacion()})
 			proyectil.lanzado(true)
 			identificador += 1
@@ -174,7 +173,7 @@ class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
     
     }
     
-    override method image() =  "enemigo2_"+ direccion +".png"
+    override method image() =  "enemigo2_"+ direccion_personaje +".png"
 }
 
 
@@ -184,7 +183,6 @@ class Jefes inherits Personajes{
 	var rango = []
 	var visual = game.addVisual(self)
 	var property dificultad
-	var property numero = ""
 	
 	method image() = "jefe1.png"
 	
@@ -213,7 +211,7 @@ class Jefes inherits Personajes{
     	rango = []
     	direcciones.forEach{ direccion =>
         	(1..5).forEach{casilla =>
-            	rango.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
+            	rango.add(game.at(position.x() + casilla * direccion_personaje.get(0), position.y() + casilla * direccion_personaje.get(1)))
         		}
     		}
     	}
