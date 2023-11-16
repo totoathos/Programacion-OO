@@ -22,24 +22,21 @@ class Heroe inherits Personajes{
     	
     }
     
-    method definir_rangos(){
+    method definir_rangos(){ 	//Metodo para asignar un rango de ataque
 	  rangos.clear()
 	  
 	  if(direccion_personaje == "arriba"){
 	    rangos = [game.at(position.x(),position.y()+1), game.at(position.x(),position.y()+2)]
-	  }
-	  
-	  if(direccion_personaje == "abajo"){
-	  	//rangos = [[position.x(),position.y()-1], [position.x(),position.y()-2]]
-	    rangos = [game.at(position.x(),position.y()-1), game.at(position.x(),position.y()-2)]
-	  
-	  }
-	  
-	  if(direccion_personaje == "der"){
-	  	
-	    rangos = [game.at(position.x()+1,position.y()), game.at(position.x()+2,position.y())]
 	  	}
 	  
+	  if(direccion_personaje == "abajo"){
+	    rangos = [game.at(position.x(),position.y()-1), game.at(position.x(),position.y()-2)]
+	  	}
+	  
+	  if(direccion_personaje == "der"){
+	    rangos = [game.at(position.x()+1,position.y()), game.at(position.x()+2,position.y())]
+	  	}
+	 
 	  if(direccion_personaje == "izq"){
 	    rangos = [game.at(position.x()-1,position.y()), game.at(position.x()-2,position.y())]
 	  	}
@@ -58,7 +55,7 @@ class Heroe inherits Personajes{
     	return estado
     }
     
-    method proteger(){
+    method proteger(){		//Cambia el estado del heroe y su direccion se cambia para que se carguen las texturas adecuadas
         if(direccion_personaje == "arriba"){
         	direccion_personaje = "arriba_cubriendose"
         }
@@ -79,26 +76,30 @@ class Heroe inherits Personajes{
     
     
     
-    method comprobar_ataque(){
+    method comprobar_ataque(){ //Comprueba si hay un enemigo en el rango de ataque
    		
+   		//Se separa en dos variables los objetos que hay en las dos casillas del rango
 	   		var buscar1 = game.getObjectsIn(rangos.get(0))
-	   		var buscar2 = game.getObjectsIn(rangos.get(1))
-	   		
+	   		var buscar2 = game.getObjectsIn(rangos.get(1)) 
+	
+		//Verifica que haya un objeto en alguna de las dos variables y que sea un enemigo 		
+		
 	    	if (not(buscar1.isEmpty())) {
 	    		buscar1.forEach{enemy => 
-	    			if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	    			if(not(enemy.tipo() == "heroe") or (not(enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);	
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}}
 	    	} 
 	    		
 	    	if (not(buscar2.isEmpty())){
 	             buscar2.forEach{enemy =>
-	             	if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
+	             	if(not(enemy.tipo() == "heroe" or (not(enemy.tipo()=='proyectil')))){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}
 	    			}}
 	    	}
     	
+    
 
     method ataque(){
     	
@@ -112,7 +113,5 @@ class Heroe inherits Personajes{
 	method mover_personaje(destinox,destinoy){
     	self.position(game.at(destinox,destinoy))
     }
-	
-	
     
 }
