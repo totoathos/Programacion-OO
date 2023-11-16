@@ -86,14 +86,14 @@ class Heroe inherits Personajes{
 		
 	    	if (not(buscar1.isEmpty())) {
 	    		buscar1.forEach{enemy => 
-	    			if(not(enemy.tipo() == "heroe") or (not(enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);	
+	    			if(not(enemy.tipo() == "heroe" or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);	
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}}
 	    	} 
 	    		
 	    	if (not(buscar2.isEmpty())){
 	             buscar2.forEach{enemy =>
-	             	if(not(enemy.tipo() == "heroe" or (not(enemy.tipo()=='proyectil')))){enemy.vida(enemy.vida() - dano);
+	             		if(not(enemy.tipo() == "heroe" or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}
 	    			}}
