@@ -8,18 +8,16 @@ class Heroe inherits Personajes{
     var property estamina= 100
     var property estado = "normal"
     var property position = game.center()
-    const property tipo = "heroe"
     var property rangos = []
-    var property direccion = "der"
     
-    method image() = "pj_" + direccion + ".png"
+    method image() = "pj_" + direccion_personaje + ".png"
     
     method aumentar_estamina(){
     	if (estamina < 91){estamina += 20}
     }
     
     method cambiar_direccion(estado_direccion){
-    	direccion = estado_direccion
+    	direccion_personaje = estado_direccion
     	self.definir_rangos()
     	
     }
@@ -27,22 +25,22 @@ class Heroe inherits Personajes{
     method definir_rangos(){
 	  rangos.clear()
 	  
-	  if(direccion == "arriba"){
+	  if(direccion_personaje == "arriba"){
 	    rangos = [game.at(position.x(),position.y()+1), game.at(position.x(),position.y()+2)]
 	  }
 	  
-	  if(direccion == "abajo"){
+	  if(direccion_personaje == "abajo"){
 	  	//rangos = [[position.x(),position.y()-1], [position.x(),position.y()-2]]
 	    rangos = [game.at(position.x(),position.y()-1), game.at(position.x(),position.y()-2)]
 	  
 	  }
 	  
-	  if(direccion == "der"){
+	  if(direccion_personaje == "der"){
 	  	
 	    rangos = [game.at(position.x()+1,position.y()), game.at(position.x()+2,position.y())]
 	  	}
 	  
-	  if(direccion == "izq"){
+	  if(direccion_personaje == "izq"){
 	    rangos = [game.at(position.x()-1,position.y()), game.at(position.x()-2,position.y())]
 	  	}
 	  
@@ -61,20 +59,20 @@ class Heroe inherits Personajes{
     }
     
     method proteger(){
-        if(direccion == "arriba"){
-        	direccion = "arriba_cubriendose"
+        if(direccion_personaje == "arriba"){
+        	direccion_personaje = "arriba_cubriendose"
         }
         
-        if(direccion == "abajo"){
-        	direccion = "abajo_cubriendose"
+        if(direccion_personaje == "abajo"){
+        	direccion_personaje = "abajo_cubriendose"
         }
         
-        if(direccion == "der"){
-        	direccion = "der_cubriendose"
+        if(direccion_personaje == "der"){
+        	direccion_personaje = "der_cubriendose"
         }
         
-        if(direccion == "izq"){
-        	direccion = "izq_cubriendose"
+        if(direccion_personaje == "izq"){
+        	direccion_personaje = "izq_cubriendose"
         }
         self.cambiar_estado("protegido")
     }
@@ -88,14 +86,14 @@ class Heroe inherits Personajes{
 	   		
 	    	if (not(buscar1.isEmpty())) {
 	    		buscar1.forEach{enemy => 
-	    			if(not(enemy.tipo() == "heroe") or (enemy.tipo()=='proyectil')){enemy.vida(enemy.vida() - dano);
+	    			if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}}
 	    	} 
 	    		
 	    	if (not(buscar2.isEmpty())){
 	             buscar2.forEach{enemy =>
-	             	if(not(enemy.tipo() == "heroe") or (enemy.tipo()=='proyectil')){enemy.vida(enemy.vida() - dano);
+	             	if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}
 	    			}}
@@ -111,7 +109,7 @@ class Heroe inherits Personajes{
   			}	
 	}
 	
-	method mover(destinox,destinoy){
+	method mover_personaje(destinox,destinoy){
     	self.position(game.at(destinox,destinoy))
     }
 	
