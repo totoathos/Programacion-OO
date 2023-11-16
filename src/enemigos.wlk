@@ -20,13 +20,20 @@ class Enemigo_Corta_Distancia inherits Personajes{
     
     //comprueba que si el heroe esta protegido para sacar estamina o vida
     override method ataque(entidad){
-        if (entidad.estado() == "protegido"){
+        if (entidad.estado() == "protegido" and entidad.estamina() > 10){
             entidad.estamina(entidad.estamina()-10)
-        }
-        entidad.vida(entidad.vida() - dano)
-        entidad.cambiar_estado("danado")
-        self.alejar(entidad)
-    }
+            entidad.vida(entidad.vida() - (dano / 2))
+        	}
+        	
+        else{
+        	entidad.vida(entidad.vida() - dano)
+        	entidad.cambiar_estado("danado")
+        	self.alejar(entidad)
+        	}
+        	
+   		self.eliminar_adversario(entidad)
+    	
+    	}
     
    	method alejar(entidad){
    		if(entidad.direccion()=="der"){entidad.mover(entidad.position().x() - 1, entidad.position().y())} ; 
@@ -136,14 +143,16 @@ class Proyectil {
    		self.cambiar_posicion(posicion)
    		game.onCollideDo(self, {entidad =>
    			if(entidad.tipo() == "heroe"){
-   				entidad.vida(entidad.vida() - dano)	
+   				if(entidad.estado() == "protegido" and entidad.estamina() > 10){entidad.estamina(entidad.estamina()-10) ; entidad.vida(entidad.vida() - (dano / 2))}
+   				else{entidad.vida(entidad.vida() - dano)}	
    				self.eliminar()
    				if(entidad.vida() <= 0){
    					game.stop()
-   					}
-   			}
-   		})
-   	}
+   					
+   				  }
+   			   }
+   			})
+   		}
 
     
 }
