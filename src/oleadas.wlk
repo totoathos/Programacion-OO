@@ -37,14 +37,14 @@ class Oleadas{
 			if(not(oleada == 10)){
 				oleada += 1
 				Menu.sumar_oleada()
-				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
+				if(heroe.vida() < 90){heroe.vida(heroe.vida() + 20)}
 				heroe.aumentar_estamina()
 				self.crear_enemigos()		
 			}
 			if((self.comprobar_enemigos()) and cantidad_jefes.isEmpty()){
 				oleada += 1
 				Menu.sumar_oleada()
-				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
+				if(heroe.vida() < 90){heroe.vida(heroe.vida() + 20)}
 				heroe.aumentar_estamina()
 				self.crear_enemigos()
 			}
