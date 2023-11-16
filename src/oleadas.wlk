@@ -11,8 +11,8 @@ class Oleadas{
 	var dificultad = 1
 	var property oleada = 1
 	
-	//comprueba el nivel de la oleada para luego aumentar la dificultad automaticamente
-	method comprobar_nivel(){
+	
+	method comprobar_nivel(){	//Metodo que comprueba el nivel de la oleada para aumentar su dificultad
 		if(oleada<=4){
 			dificultad = 1
 			return "Principiante"
@@ -28,18 +28,18 @@ class Oleadas{
 		return " "
 	}
 	
-	method comprobar_enemigos(){
+	method comprobar_enemigos(){		//Comprueba si la coleccion donde se almacenan enemigos esta vacia
 		return cantidad_enemigos.isEmpty()
 	}
 	
-	method avanzar_oleadas(){
+	method avanzar_oleadas(){	//Metodo que permite el avance de oleadas y la recuperacion de vida y estamina con el pasar de las mismas
 			
 			if(not(oleada == 10)){
 				oleada += 1
 				Menu.sumar_oleada()
 				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
 				heroe.aumentar_estamina()
-				self.crear_enemigos()
+				self.crear_enemigos()		
 			}
 			if((self.comprobar_enemigos()) and cantidad_jefes.isEmpty()){
 				oleada += 1
@@ -52,14 +52,14 @@ class Oleadas{
 		
 	}
 	
-	//para crear los enemigos evaluamos la oleada para determinar la dificultad
-	method crear_enemigos(){
-		var contador = 0
+	
+	method crear_enemigos(){		//Metodo donde creamos enemigos segun la dificultad
+		var contador = 0	//Se usa para realizar ticks propios de cada enemigo 
 		(1 .. generador_enemigos).forEach{n => const id_a = contador.toString() + "a"; const id_b = contador.toString() + "b" ; cantidad_enemigos.add(new Enemigos_Larga_Distancia(id_tick = id_a , vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_largo")); cantidad_enemigos.add(new Enemigo_Corta_Distancia (id_tick = id_b ,vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_corto")) ; contador += 1}
 		cantidad_enemigos.forEach{n => game.addVisual(n)}
 		cantidad_enemigos.forEach{n=> game.onTick(1600.randomUpTo(2100), n.id_tick(), {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
 		
-		if(oleada == 10){
+		if(oleada == 10){		//Si se llega a la oleada 10 entonces se crea el jefe
 			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad, tipo= "jefe"))
 			}
 	
