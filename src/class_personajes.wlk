@@ -9,6 +9,7 @@ class Personajes{
     var property vida = 100
     var property dano = 200
     var property tipo
+    var property direccion_personaje = "der"
     
     method ataque(entidad){
         entidad.vida(entidad.vida() - dano)
@@ -21,15 +22,12 @@ class Personajes{
     }
     
     method eliminar_adversario(adversario){
-    	var contador = 0
-    	var indice = 0
     	if(self.comprobar_vida(adversario)){
     		if(adversario.tipo() == "Jefe"){
     			game.stop()}
     		game.removeVisual(adversario)
-    		Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo == adversario){indice = contador} ; contador += 1}
     		Oleada.cantidad_enemigos().remove(adversario)
-    		game.removeTickEvent(adversario.numero())
+    		game.removeTickEvent(adversario.id_tick())
     		if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}
     	 }
     }   
@@ -38,16 +36,16 @@ class Personajes{
 
 object menu{
 	var property position = game.at(1,13)
-	const property blanco = "FFFFFF"
-	var property nivel = 1
+	const property color_blanco = "FFFFFF"
+	var property oleada = 1
 	var property tipo = "menu"
 	
 	method sumar_oleada(){
-		nivel += 1
+		oleada += 1
 	}
-	method text() = "       " + "Oleada " + nivel + "  " + "Vida: " + heroe.vida()
+	method text() = "       " + "Oleada " + oleada + "  " + "Vida: " + heroe.vida()
 	
-	method textColor() = self.blanco()
+	method textColor() = self.color_blanco()
 }
 
 
