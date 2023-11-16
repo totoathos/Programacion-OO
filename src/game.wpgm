@@ -4,33 +4,34 @@ import instancias.*
 
 
 program juego {
-	game.width(30)
-    game.height(14)
-    game.boardGround("fondo.jpg")
+	//Creacion de tablero
+		game.width(30)
+	    game.height(14)
+	    game.boardGround("fondo.jpg")
+    
     game.title("dungeon")
-    game.addVisual(Menu)
-    //coleccion creada para almzacenar a los enemigos
-    Oleada.crear_enemigos()
+    
+    game.addVisual(Menu) 		//Se añade el menu al tablero
+    Oleada.crear_enemigos() 	//Se crean los enemigos
+    
+    //Se genera el ataque de los enemigos a larga distancia
     game.onTick(7000,'analizar Ataque',{Oleada.cantidad_enemigos().forEach{enemigo => if(enemigo.tipo()=="enemigo_largo" and enemigo.vida()>0){enemigo.disparar()}}})
-    // remover tick al momento de ser atacado
-    game.addVisualCharacter(heroe)
-    
-
-    game.onTick(10000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
    
-    //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
-	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
-	keyboard.f().onPressDo{heroe.proteger()}
-	keyboard.g().onPressDo{console.println(Oleada.cantidad_enemigos())}
-	
-	//tecla h para comprobar estamina y la g para ver la vida, esto lo usamos para comptrobar en nuestros tests
-    //keyboard.h().onPressDo{heroe.aumentar_estamina(); game.say(heroe, "estamina " + heroe.estamina())}
-    //keyboard.g().onPressDo{ game.say(heroe, "Vida:" + heroe.vida())}
+    game.addVisualCharacter(heroe) 	//Se añade el personaje principal al tablero
     
-    keyboard.up().onPressDo{heroe.cambiar_direccion("arriba")}
-    keyboard.right().onPressDo{heroe.cambiar_direccion("der")}
-    keyboard.down().onPressDo{heroe.cambiar_direccion("abajo")}
-    keyboard.left().onPressDo{heroe.cambiar_direccion("izq")}
+    //Genera al jefe y su ataque
+    game.onTick(10000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
+	
+	
+	//Teclas con funciones:
+		keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
+		keyboard.f().onPressDo{heroe.proteger()}
+		
+	//Teclas de movimiento:
+	    keyboard.up().onPressDo{heroe.cambiar_direccion("arriba")}
+	    keyboard.right().onPressDo{heroe.cambiar_direccion("der")}
+	    keyboard.down().onPressDo{heroe.cambiar_direccion("abajo")}
+	    keyboard.left().onPressDo{heroe.cambiar_direccion("izq")}
     
 
     game.start()
