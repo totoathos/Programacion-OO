@@ -20,7 +20,7 @@ program juego {
     game.addVisualCharacter(heroe) 	//Se añade el personaje principal al tablero
     
     //Genera al jefe y su ataque
-    game.onTick(10000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
+    game.onTick(10000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='jefe'){jefe.ataque(heroe)}}}})
 	
 	
 	//Teclas con funciones:
