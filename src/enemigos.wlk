@@ -1,6 +1,6 @@
 import wollok.game.*
 import class_personajes.*
-import objaa.*
+import instancias.*
 
 class Enemigo_Corta_Distancia inherits Personajes{
     //Por Default, asignamos que el enemigo global sea de corta distancia
