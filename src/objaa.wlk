@@ -1,4 +1,4 @@
-import obj.*
+import class_personajes.*
 import enemigos.*
 import oleadas.*
 import heroe.*
