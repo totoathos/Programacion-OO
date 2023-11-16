@@ -7,7 +7,7 @@ class Oleadas{
 	var property cantidad_enemigos = []
 	var property cantidad_jefes = []
 	var property cantidad_puas= []
-	var generador_enemigos = 1.randomUpTo(2).truncate(0)
+	var generador_enemigos = 5.randomUpTo(10).truncate(0)
 	var dificultad = 1
 	var property nivel = 1
 	
@@ -38,12 +38,14 @@ class Oleadas{
 				nivel += 1
 				Menu.sumar_oleada()
 				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
+				heroe.aumentar_estamina()
 				self.crear_enemigos()
 			}
 			if((self.comprobar_enemigos()) and cantidad_jefes.isEmpty()){
 				nivel += 1
 				Menu.sumar_oleada()
 				if(heroe.vida() < 100){heroe.vida(heroe.vida() + 20)}
+				heroe.aumentar_estamina()
 				self.crear_enemigos()
 			}
 			
@@ -53,15 +55,14 @@ class Oleadas{
 	//para crear los enemigos evaluamos la oleada para determinar la dificultad
 	method crear_enemigos(){
 		var contador = 0
-		(1 .. generador_enemigos).forEach{n => const numero_a = contador.toString() + "a"; const numero_b = contador.toString() + "b" ; cantidad_enemigos.add(new Enemigos_Larga_Distancia(numero = numero_a , vida = 75*dificultad,dano = 30*dificultad, tipo="enemigo_largo")); cantidad_enemigos.add(new Enemigo_Corta_Distancia(numero= numero_b ,vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_corto"))}
+		(1 .. generador_enemigos).forEach{n => const numero_a = contador.toString() + "a"; const numero_b = contador.toString() + "b" ; cantidad_enemigos.add(new Enemigos_Larga_Distancia(numero = numero_a , vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_largo")); cantidad_enemigos.add(new Enemigo_Corta_Distancia(numero= numero_b ,vida = 75*dificultad,dano = 30*dificultad,tipo="enemigo_corto")) ; contador += 1}
 		cantidad_enemigos.forEach{n => game.addVisual(n)}
 		cantidad_enemigos.forEach{n=> game.onTick(1600.randomUpTo(2100), n.numero(), {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
 		
 		if(nivel == 10){
-			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad, tipo='Jefe'))
+			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad))
 			}
 	
-
 }
 
 }
