@@ -15,7 +15,8 @@ program juego {
     // remover tick al momento de ser atacado
     game.addVisualCharacter(heroe)
     
-    game.onTick(10000, 'Ataque de jefe', {if(Oleada.nivel() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
+
+    game.onTick(10000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='Jefe'){jefe.ataque(heroe)}}}})
    
     //keyboard.t().onPressDo{heroe.ataque(Oleada.cantidad_enemigos().filter{n => n.position() == heroe.position()})}
 	keyboard.t().onPressDo{heroe.ataque() ; game.schedule(500, {heroe.cambiar_estado("normal")})}
