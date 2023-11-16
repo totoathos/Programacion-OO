@@ -5,16 +5,17 @@ import enemigos.*
 
 
 class Heroe inherits Personajes{
-    var property estamina= 50
+    var property estamina= 100
     var property estado = "normal"
     var property position = game.center()
+    const property tipo = "heroe"
     var property rangos = []
     var property direccion = "der"
     
     method image() = "pj_" + direccion + ".png"
     
     method aumentar_estamina(){
-    	if (estamina <= 91){estamina += 10}
+    	if (estamina < 91){estamina += 20}
     }
     
     method cambiar_direccion(estado_direccion){
@@ -84,17 +85,17 @@ class Heroe inherits Personajes{
    		
 	   		var buscar1 = game.getObjectsIn(rangos.get(0))
 	   		var buscar2 = game.getObjectsIn(rangos.get(1))
-			//if((rangos.contains(enemigo.x())) and position.y() == enemigo.y() or (rangos.contains(enemigo.y())) and position.x() == enemigo.x()){console.println("atacando");enemigo.vida(enemigo.vida() - dano)}
+	   		
 	    	if (not(buscar1.isEmpty())) {
 	    		buscar1.forEach{enemy => 
-	    			if(not(enemy.tipo() == "heroe" or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);
+	    			if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}}
 	    	} 
 	    		
 	    	if (not(buscar2.isEmpty())){
 	             buscar2.forEach{enemy =>
-	             	if(not(enemy.tipo() == "heroe"  or (enemy.tipo()=='proyectil'))){enemy.vida(enemy.vida() - dano);
+	             	if(not(enemy.tipo() == "heroe")){enemy.vida(enemy.vida() - dano);
 	    			self.eliminar_adversario(enemy);
 	    			return enemy}
 	    			}}
