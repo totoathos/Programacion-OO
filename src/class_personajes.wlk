@@ -7,7 +7,7 @@ const personajes = game.allVisuals()
 
 class Personajes{
     var property vida = 100
-    var property dano = 200
+    var property dano = 35
     var property tipo
     var property direccion_personaje = "der"
     
