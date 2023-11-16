@@ -7,7 +7,6 @@ class Enemigo_Corta_Distancia inherits Personajes{
     var property x = [0, 28].anyOne()
     var property y = 2.randomUpTo(10).truncate(0)
     var property position = game.at(x,y)
-    var property tipo = "enemigo_corto"
     var property direccion = "der"
     var property numero = ""
     
@@ -74,7 +73,7 @@ class Proyectil {
 	var property tipo = "proyectil"
 	var imagen = "der"
 	var property lanzado = false
-    var property numero = ""
+    var property id
    
     method image() = "fuego_" + imagen + ".png"
     
@@ -128,7 +127,7 @@ class Proyectil {
    		lanzado = false		
    		self.cambiar_posicion(game.at(0,0))
    		game.removeVisual(self)
-   		
+   		game.removeTickEvent('Avanzando' + id.toString())
    	}
    
    	method iniciar_disparo(posicion, orientacion){
@@ -141,7 +140,6 @@ class Proyectil {
    				self.eliminar()
    				if(entidad.vida() <= 0){
    					game.stop()
-   					
    					}
    			}
    		})
@@ -154,15 +152,95 @@ class Proyectil {
 
 class Enemigos_Larga_Distancia inherits Enemigo_Corta_Distancia{
 	
+	var identificador = 0
+	
 	method disparar(){
-		const proyectil = new Proyectil(position = position, direccion = direccion)
+		const proyectil = new Proyectil(position = position, direccion = direccion, id=identificador)
 		if (not(proyectil.lanzado())){
 			proyectil.iniciar_disparo(position, direccion)
-			game.schedule(250, {proyectil.avanzar() ; proyectil.comprobacion()})
+			game.onTick(250, 'Avanzando' + identificador.toString() , {proyectil.avanzar() ; proyectil.comprobacion()})
 			proyectil.lanzado(true)
+			identificador += 1
 		}
     
     }
     
     override method image() =  "enemigo2_"+ direccion +".png"
+}
+
+
+class Jefes inherits Personajes{
+	
+	var property position = game.at(10,10)
+	var rango = []
+	var visual = game.addVisual(self)
+	var property dificultad
+	var property numero = ""
+	
+	method image() = "jefe1.png"
+	
+	
+	method comprobar_atacar(){
+		self.anadir_rangos_disparo()
+    	rango.forEach{n => if(n == heroe.position()) return true}
+	}
+	
+	override method ataque(heroee){
+		self.comprobar_atacar()
+		if (dificultad==1 or dificultad==1.25){
+			self.pinchos()
+		}
+		heroe.vida(heroe.vida()-dano)
+	}
+	
+	method anadir_rangos_disparo(){
+    	var direcciones = [
+        	[1,0],
+        	[0,1],
+        	[-1,0],
+        	[0,-1]
+    	]
+
+    	rango = []
+    	direcciones.forEach{ direccion =>
+        	(1..5).forEach{casilla =>
+            	rango.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
+        		}
+    		}
+    	}
+
+	method pinchos(){
+		Oleada.cantidad_puas().add(new Puas())
+	}
+	
+}
+
+class Puas{
+	var property x = 5.randomUpTo(20).truncate(0)
+    var property y = 5.randomUpTo(12).truncate(0)
+	var property position = game.at(x,y)
+	var property tipo = 'Puas'
+	var dano = 10
+	var visual = game.addVisual(self)
+	
+	method image() = "spike_4.png"
+	
+	method comprobar_posicion_jugador(){
+		return(position==heroe.position())
+	}
+	
+	
+	method ataque(jugador){
+		if((self.comprobar_posicion_jugador())){
+			(jugador.vida(jugador.vida() - dano))
+			console.println(heroe.vida())
+			self.desaparecer()
+		}
+	}
+	
+	method desaparecer(){
+		game.removeVisual(self)
+		Oleada.cantidad_puas().remove(self)
+	}
+	
 }
