@@ -1,5 +1,5 @@
 import wollok.game.*
-import objaa.*
+import instancias.*
 import enemigos.*
 import oleadas.*
 
