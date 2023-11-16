@@ -1,5 +1,5 @@
 import wollok.game.*
-import obj.*
+import class_personajes.*
 import objaa.*
 import enemigos.*
 
