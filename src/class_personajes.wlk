@@ -25,10 +25,12 @@ class Personajes{
     	if(self.comprobar_vida(adversario)){
     		if(adversario.tipo() == "jefe"){		//Si es el jefe se cierra el juego
     			game.stop()}
-    		game.removeVisual(adversario)
-    		Oleada.cantidad_enemigos().remove(adversario)	//Se lo remueve de la coleccion donde se almacena
-    		game.removeTickEvent(adversario.id_tick())		//Se remueve su tick
-    		if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}
+    			
+    		else{
+    			game.removeVisual(adversario)
+    			Oleada.cantidad_enemigos().remove(adversario)	//Se lo remueve de la coleccion donde se almacena
+    			game.removeTickEvent(adversario.id_tick())		//Se remueve su tick
+    			if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}}
     	 }
     }   
     
