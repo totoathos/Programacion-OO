@@ -8,6 +8,7 @@ const personajes = game.allVisuals()
 class Personajes{
     var property vida = 100
     var property dano = 200
+    var property tipo
     
     method ataque(entidad){
         entidad.vida(entidad.vida() - dano)
@@ -51,79 +52,3 @@ object menu{
 
 
 
-class Jefes inherits Personajes{
-	
-	var property position = game.at(10,10)
-	var rango = []
-	var property tipo = 'Jefe'
-	var visual = game.addVisual(self)
-	var property dificultad
-	var property numero = ""
-	
-	method image() = "jefe1.png"
-	
-	
-	method comprobar_atacar(){
-		self.anadir_rangos_disparo()
-    	rango.forEach{n => if(n == heroe.position()) return true}
-	}
-	
-	override method ataque(heroee){
-		self.comprobar_atacar()
-		if (dificultad==1 or dificultad==1.25){
-			self.pinchos()
-		}
-		heroe.vida(heroe.vida()-dano)
-	}
-	
-	method anadir_rangos_disparo(){
-    	var direcciones = [
-        	[1,0],
-        	[0,1],
-        	[-1,0],
-        	[0,-1]
-    	]
-
-    	rango = []
-    	direcciones.forEach{ direccion =>
-        	(1..5).forEach{casilla =>
-            	rango.add(game.at(position.x() + casilla * direccion.get(0), position.y() + casilla * direccion.get(1)))
-        		}
-    		}
-    	}
-
-	method pinchos(){
-		Oleada.cantidad_puas().add(new Puas())
-	}
-	
-}
-
-class Puas{
-	var property x = 5.randomUpTo(20).truncate(0)
-    var property y = 5.randomUpTo(12).truncate(0)
-	var property position = game.at(x,y)
-	var property tipo = 'Puas'
-	var dano = 10
-	var visual = game.addVisual(self)
-	
-	method image() = "spike_4.png"
-	
-	method comprobar_posicion_jugador(){
-		return(position==heroe.position())
-	}
-	
-	
-	method ataque(jugador){
-		if((self.comprobar_posicion_jugador())){
-			(jugador.vida(jugador.vida() - dano))
-			console.println(heroe.vida())
-			self.desaparecer()
-		}
-	}
-	
-	method desaparecer(){
-		game.removeVisual(self)
-		Oleada.cantidad_puas().remove(self)
-	}
-	
-}
