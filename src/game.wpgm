@@ -20,9 +20,8 @@ program juego {
     game.addVisualCharacter(heroe) 	//Se añade el personaje principal al tablero
     
     //Genera al jefe y su ataque
-    game.onTick(4000, 'Ataque de jefe', {if(Oleada.oleada() == 10){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='jefe'){jefe.ataque(heroe)}}}})
+    game.onTick(4000, 'Ataque de jefe', {if(Oleada.oleada_jefe()){Oleada.cantidad_jefes().forEach{jefe => if(jefe.tipo()=='jefe'){jefe.ataque(heroe)}}}})
     game.onTick(5000, "Movimiento de jefe", {Oleada.cantidad_jefes().forEach{jefe => var x = [5, 10, 15].anyOne() ; var y = [6, 9 , 12].anyOne() ; jefe.position(game.at(x, y))}})
-	
 	//contacto con puas hace daño al heroe
 	game.onCollideDo(heroe, {pua => if(pua.tipo()=='puas'){pua.ataque(heroe)}})
 	
