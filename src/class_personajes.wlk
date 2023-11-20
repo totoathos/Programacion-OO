@@ -6,10 +6,11 @@ import oleadas.*
 const personajes = game.allVisuals()
 
 class Personajes{
-    var property vida = 100
-    var property dano = 35
+    var property vida = 10000
+    var property dano = 10000
     var property tipo
     var property direccion_personaje = "der"
+    var property eliminable = false
     
     method ataque(entidad){					// Metodo que luego de atacar envia el mensaje para que el enemigo se elimine
         entidad.vida(entidad.vida() - dano)
@@ -24,7 +25,9 @@ class Personajes{
     method eliminar_adversario(adversario){		//Metodo para remover al adversario del tablero, de su almacenamiento y su evento tick
     	if(self.comprobar_vida(adversario)){
     		if(adversario.tipo() == "jefe"){		//Si es el jefe se cierra el juego
-    			game.stop()}
+    			game.removeVisual(adversario)
+    			Oleada.cantidad_jefes().remove(adversario)
+    			if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}}
     			
     		else{
     			game.removeVisual(adversario)
