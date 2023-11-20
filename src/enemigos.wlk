@@ -77,12 +77,13 @@ class Enemigo_Corta_Distancia inherits Personajes{
 class Proyectil {
 	var property position
 	const dano = 10
-	var direccion 
+	var direccion
 	var property tipo = "proyectil"
 	var direccion_imagen = "der"
 	var property lanzado = false
     var property id
-   
+    var property eliminable = false
+    
     method image() = "fuego_" + direccion_imagen + ".png"
     
     
@@ -149,7 +150,6 @@ class Proyectil {
    				self.eliminar()				//Al hacer contacto se elimina a si mismo
    				if(entidad.vida() <= 0){
    					game.stop()				//Detiene el juego si es que el heroe llega a morir
-   					
    				  }
    			   }
    			})
@@ -196,11 +196,31 @@ class Jefes inherits Personajes{
     	return(0<medidor)
 	}
 	
+	method disparar(n){
+		var direcciones = ['der','izq','arriba','bajo']
+		var identificador = 1.randomUpTo(1000)
+		var proyectil = new Proyectil(position = position, direccion = direcciones.get(n), id=identificador)
+		if (not(proyectil.lanzado())){
+			proyectil.iniciar_disparo(position, direcciones.get(n))
+			game.onTick(250, 'Avanzando' + identificador.toString() , {proyectil.avanzar() ; proyectil.comprobacion()})
+			proyectil.lanzado(true)
+			identificador += 1
+		}
+	}
+	
 	override method ataque(protagonista){
-		if (dificultad==1 or dificultad==1.25){  	//Genera puas en caso que la dificultad sea la requerida
+		if(self.comprobar_ataque(protagonista)){protagonista.vida(protagonista.vida()-dano)}
+		
+		if(dificultad==1){  	//Genera puas en caso que la dificultad sea la requerida
 			self.generar_puas()
 		}
-		if(self.comprobar_ataque(protagonista)){protagonista.vida(protagonista.vida()-dano)}
+		if(dificultad==1.25){  	//Genera 4 disparos en caso que la dificultad sea la requerida
+			(0 .. 3).forEach{n => self.disparar(n)}
+		}
+		if(dificultad==1.5){
+			(0 .. 3).forEach{n => self.disparar(n)}
+			self.generar_puas()
+		}
 		if(protagonista.vida() <= 0){game.stop()}
 	}
 	
@@ -232,7 +252,8 @@ class Puas{
 	var property tipo = 'puas'
 	var dano = 10
 	var visual = game.addVisual(self)
-	
+	var property eliminable = false
+    
 	method image() = "spike_4.png"
 	
 	method comprobar_posicion_jugador(){
