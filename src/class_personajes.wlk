@@ -6,8 +6,8 @@ import oleadas.*
 const personajes = game.allVisuals()
 
 class Personajes{
-    var property vida = 10000
-    var property dano = 10000
+    var property vida = 100
+    var property dano = 35
     var property tipo
     var property direccion_personaje = "der"
     var property eliminable = false
