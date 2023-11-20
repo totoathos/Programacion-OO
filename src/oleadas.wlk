@@ -7,7 +7,7 @@ class Oleadas{
 	var property cantidad_enemigos = []
 	var property cantidad_jefes = []
 	var property cantidad_puas= []
-	var generador_enemigos = 1.randomUpTo(2).truncate(0)
+	var generador_enemigos = 5.randomUpTo(7).truncate(0)
 	var property dificultad = 1
 	var property oleada = 1
 	
