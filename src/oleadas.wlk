@@ -47,7 +47,7 @@ class Oleadas{
 				oleada += 1
 				Menu.sumar_oleada()
 				self.comprobar_nivel()
-				if(heroe.vida() < 90){heroe.vida(heroe.vida() + 20)}
+				if(heroe.vida() <= 80){heroe.vida(heroe.vida() + 20)}
 				heroe.aumentar_estamina()
 				self.crear_enemigos()		
 			}
@@ -56,7 +56,7 @@ class Oleadas{
 				oleada += 1
 				self.comprobar_nivel()
 				Menu.sumar_oleada()
-				if(heroe.vida() < 90){heroe.vida(heroe.vida() + 20)}
+				if(heroe.vida() <= 80){heroe.vida(heroe.vida() + 20)}
 				heroe.aumentar_estamina()
 				self.crear_enemigos()
 			}
