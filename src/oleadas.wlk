@@ -72,7 +72,13 @@ class Oleadas{
 		cantidad_enemigos.forEach{n=> game.onTick(1600.randomUpTo(2100), n.id_tick(), {n.seguir(heroe) ; if(n.position()==heroe.position()){n.ataque(heroe)}})}
 		
 		if(self.oleada_jefe()){		//cada 5 oleadas se crea el jefe
-			cantidad_jefes.add(new Jefes(vida=200, dano=50, dificultad=dificultad, tipo= "jefe", eliminable = true))
+			cantidad_jefes.add(if(dificultad == 1){
+									new Jefes(vida=200, dano=50, dificultad=dificultad, tipo= "jefe", eliminable = true, num_imagen = "1")} 
+							   else if(dificultad == 1.25){
+							   	    new Jefes(vida=200, dano=50, dificultad=dificultad, tipo= "jefe", eliminable = true, num_imagen = "1.25")} 
+							   else {
+							   		new Jefes(vida=200, dano=50, dificultad=dificultad, tipo= "jefe", eliminable = true, num_imagen = "1.5")
+							   })
 			}
 	
 }
