@@ -13,7 +13,7 @@ class Heroe inherits Personajes{
     method image() = "pj_" + direccion_personaje + ".png"
     
     method aumentar_estamina(){
-    	if (estamina < 91){estamina += 20}
+    	if (estamina <= 80){estamina += 20}
     }
     
     method cambiar_direccion(estado_direccion){
