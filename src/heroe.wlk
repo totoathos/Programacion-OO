@@ -110,6 +110,16 @@ class Heroe inherits Personajes{
   			}	
 	}
 	
+	method ataque_especial(){
+		if(self.comprobar_estado() == "normal" and estamina >= 35){
+			self.cambiar_estado("atacando")
+			estamina -= 35
+			dano += 100
+			self.comprobar_ataque()
+			game.schedule(150, {dano -= 100 ; self.cambiar_estado("normal")})
+		}
+	}
+	
 	method mover_personaje(destinox,destinoy){
     	self.position(game.at(destinox,destinoy))
     }
