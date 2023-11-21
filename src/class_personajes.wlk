@@ -7,7 +7,7 @@ const personajes = game.allVisuals()
 
 class Personajes{
     var property vida = 100
-    var property dano = 35
+    var property dano = 40
     var property tipo
     var property direccion_personaje = "der"
     var property eliminable = false
@@ -24,7 +24,7 @@ class Personajes{
     
     method eliminar_adversario(adversario){		//Metodo para remover al adversario del tablero, de su almacenamiento y su evento tick
     	if(self.comprobar_vida(adversario)){
-    		if(adversario.tipo() == "jefe"){		//Si es el jefe se cierra el juego
+    		if(adversario.tipo() == "jefe"){		//Es el proceso de eliminacion en caso que sea un jefe
     			game.removeVisual(adversario)
     			Oleada.cantidad_jefes().remove(adversario)
     			if(Oleada.comprobar_enemigos()){Oleada.avanzar_oleadas()}}
@@ -52,5 +52,4 @@ object menu{		//Creacion de un menu donde se ve la oleada, la vida y estamina de
 	
 	method textColor() = self.color_blanco()
 }
-
 
