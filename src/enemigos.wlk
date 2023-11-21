@@ -185,8 +185,9 @@ class Jefes inherits Personajes{
 	var rango = []
 	var visual = game.addVisual(self)
 	var property dificultad
+	var num_imagen 
 	
-	method image() = "jefe1.png"
+	method image() = "jefe" + num_imagen + ".png"
 	
 	
 	method comprobar_ataque(protagonista){
